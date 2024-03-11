@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Boxfusion.Posts.Migrations
 {
     [DbContext(typeof(PostsDbContext))]
-    [Migration("20240308170510_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240311102100_create-posts")]
+    partial class createposts
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1582,35 +1582,13 @@ namespace Boxfusion.Posts.Migrations
                     b.ToTable("AbpUsers");
                 });
 
-            modelBuilder.Entity("Boxfusion.Posts.Domain.Like", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("PostId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<long?>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PostId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Likes");
-                });
-
             modelBuilder.Entity("Boxfusion.Posts.Domain.Post", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
@@ -1618,15 +1596,13 @@ namespace Boxfusion.Posts.Migrations
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("OriginalId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<long>("OriginalId")
+                        .HasColumnType("bigint");
 
-                    b.Property<long?>("UserId")
+                    b.Property<long>("UserId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OriginalId");
 
                     b.HasIndex("UserId");
 
@@ -1915,34 +1891,15 @@ namespace Boxfusion.Posts.Migrations
                     b.Navigation("LastModifierUser");
                 });
 
-            modelBuilder.Entity("Boxfusion.Posts.Domain.Like", b =>
-                {
-                    b.HasOne("Boxfusion.Posts.Domain.Post", "Post")
-                        .WithMany()
-                        .HasForeignKey("PostId");
-
-                    b.HasOne("Boxfusion.Posts.Authorization.Users.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Post");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Boxfusion.Posts.Domain.Post", b =>
                 {
-                    b.HasOne("Boxfusion.Posts.Domain.Post", "Original")
+                    b.HasOne("Boxfusion.Posts.Authorization.Users.User", "UserModel")
                         .WithMany()
-                        .HasForeignKey("OriginalId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("Boxfusion.Posts.Authorization.Users.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Original");
-
-                    b.Navigation("User");
+                    b.Navigation("UserModel");
                 });
 
             modelBuilder.Entity("Boxfusion.Posts.MultiTenancy.Tenant", b =>

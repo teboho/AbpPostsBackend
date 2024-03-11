@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace Boxfusion.Posts.Services
 {
-    //public class PostAppService : AsyncCrudAppService<Post, PostDto, Guid>
-    //{
-    //    //private readonly IRepository<Post, Guid> _repository;
-    //    public PostAppService(IRepository<Post, Guid> repository) : base(repository)
-    //    {
-            
-    //    }
-    //}
+    public class PostAppService : AsyncCrudAppService<Post, PostDto, long>, IPostAppService
+    {
+        //private readonly IRepository<Post, long> _repository;
+        public PostAppService(IRepository<Post, long> repository) : base(repository)
+        {
+            //_repository = repository;
+        }
+    }
 }

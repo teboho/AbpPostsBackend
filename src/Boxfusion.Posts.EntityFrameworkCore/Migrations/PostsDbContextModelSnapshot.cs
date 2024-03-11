@@ -1579,33 +1579,13 @@ namespace Boxfusion.Posts.Migrations
                     b.ToTable("AbpUsers");
                 });
 
-            modelBuilder.Entity("Boxfusion.Posts.Domain.Like", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("PostId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PostId");
-
-                    b.ToTable("Likes");
-                });
-
             modelBuilder.Entity("Boxfusion.Posts.Domain.Post", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
@@ -1613,15 +1593,13 @@ namespace Boxfusion.Posts.Migrations
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("OriginalId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<long>("OriginalId")
+                        .HasColumnType("bigint");
 
-                    b.Property<long?>("UserId")
+                    b.Property<long>("UserId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OriginalId");
 
                     b.HasIndex("UserId");
 
@@ -1910,28 +1888,15 @@ namespace Boxfusion.Posts.Migrations
                     b.Navigation("LastModifierUser");
                 });
 
-            modelBuilder.Entity("Boxfusion.Posts.Domain.Like", b =>
-                {
-                    b.HasOne("Boxfusion.Posts.Domain.Post", "Post")
-                        .WithMany()
-                        .HasForeignKey("PostId");
-
-                    b.Navigation("Post");
-                });
-
             modelBuilder.Entity("Boxfusion.Posts.Domain.Post", b =>
                 {
-                    b.HasOne("Boxfusion.Posts.Domain.Post", "Original")
+                    b.HasOne("Boxfusion.Posts.Authorization.Users.User", "UserModel")
                         .WithMany()
-                        .HasForeignKey("OriginalId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("Boxfusion.Posts.Authorization.Users.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Original");
-
-                    b.Navigation("User");
+                    b.Navigation("UserModel");
                 });
 
             modelBuilder.Entity("Boxfusion.Posts.MultiTenancy.Tenant", b =>

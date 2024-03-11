@@ -10,25 +10,30 @@ using System.Threading.Tasks;
 
 namespace Boxfusion.Posts.Domain
 {
-    //public class Post : Entity<long>
-    //{
+    public class Post : Entity<long>
+    {
+        public Post()
+        {
+            DateCreated = DateTime.Now;
+        }
 
-    //    public DateTime DateCreated { get; set; }
+        public string Content { get; set; }
+        public DateTime DateCreated { get; set; }
 
-    //    public string Content { get; set; }
 
-    //    /// <summary>
-    //    /// If it is null then it is an Original not a reply
-    //    /// </summary>
-    //    public Post Original { get; set; }
+        /// <summary>
+        /// If it is null then it is an Original not a reply
+        /// Self-referential foreign key, for when a post is actually a reply an not original
+        /// </summary>
+        public long OriginalId { get; set; }
+        //[ForeignKey(nameof(OriginalId))]
+        //public Post PostModel { get; set; }
 
-    //    public Post() 
-    //    {
-    //        DateCreated = DateTime.Now;
-    //    }
-
-    //    public long UserId { get; set; }
-    //    [ForeignKey("UserId")]
-    //    public AbpUser<User> User { get; set; }
-    //}
+        /// <summary>
+        /// UserId is a foreign key to the users table...
+        /// </summary>
+        public long UserId { get; set; }
+        [ForeignKey(nameof(UserId))]
+        public User UserModel { get; set; }
+    }
 }

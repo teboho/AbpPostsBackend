@@ -11,17 +11,13 @@ using System.Threading.Tasks;
 
 namespace Boxfusion.Posts.Services.Dtos
 {
-    //[AutoMap(typeof(Post))]
-    //public class PostDto : EntityDto<Guid>
-    //{
-    //    public Guid UserId { get; set; }
-    //    public DateTime DateCreated { get; set; }
+    [AutoMap(typeof(Post))]
+    public class PostDto : EntityDto<long>
+    {
+        public DateTime DateCreated { get; set; } = DateTime.Now;
 
-    //    public string Content { get; set; }
-
-    //    /// <summary>
-    //    /// If it is null then it is an Original not a reply
-    //    /// </summary>
-    //    public Post Original { get; set; }
-    //}
+        public string Content { get; set; }
+        public long UserId { get; set; }
+        public long OriginalId { get; set; }
+    }
 }

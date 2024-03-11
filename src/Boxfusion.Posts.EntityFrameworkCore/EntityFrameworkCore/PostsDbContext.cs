@@ -10,7 +10,7 @@ namespace Boxfusion.Posts.EntityFrameworkCore
     public class PostsDbContext : AbpZeroDbContext<Tenant, Role, User, PostsDbContext>
     {
         /* Define a DbSet for each entity of the application */
-        public DbSet<Like> Likes { get; set; }
+        //public DbSet<Like> Likes { get; set; }
         public DbSet<Post> Posts { get; set; }
         public PostsDbContext(DbContextOptions<PostsDbContext> options)
             : base(options)
